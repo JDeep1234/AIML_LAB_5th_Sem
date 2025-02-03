@@ -12,4 +12,4 @@ for i, c in enumerate(['r', 'g', 'b']):
     plt.scatter(X[labels == i, 0], X[labels == i, 1], c=c, label=f'Cluster {i+1}')
     
 plt.scatter(centroids[:, 0], centroids[:, 1], marker='x', c='black', label='Centroids')
-plt.title('K-Means Clustering on Iris Dataset'), plt.xlabel('Sepal Length'), plt.ylabel('Sepal Width'), plt.legend(), pl
+plt.title('K-Means Clustering on Iris Dataset'), plt.xlabel('Sepal Length'), plt.ylabel('Sepal Width'), plt.legend(), plt.show()
