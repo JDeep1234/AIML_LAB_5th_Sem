@@ -2,38 +2,72 @@ import numpy as np
 from queue import PriorityQueue
 
 class Puzzle:
-    def __init__(self, start, goal): self.s, self.g = start, goal
-    def show(self, grid): print(grid)
-    def is_goal(self, grid): return np.array_equal(grid, self.g)
+    def __init__(self, start, goal):
+        self.start = start
+        self.goal = goal
+
+    def show(self, grid):
+        print(grid)
+
+    def is_goal(self, grid):
+        return np.array_equal(grid, self.goal)
+
     def moves(self, grid):
-        p = np.argwhere(grid == 0)[0]
-        mv = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        return [self.swap(grid, p, (p[0]+dx, p[1]+dy)) for dx, dy in mv if 0 <= p[0]+dx < 3 and 0 <= p[1]+dy < 3]
+        """Generate possible moves by swapping the empty tile (0) with adjacent tiles."""
+        empty_pos = np.argwhere(grid == 0)[0]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        return [
+            self.swap(grid, empty_pos, (empty_pos[0] + dx, empty_pos[1] + dy))
+            for dx, dy in directions
+            if 0 <= empty_pos[0] + dx < 3 and 0 <= empty_pos[1] + dy < 3
+        ]
+
     def swap(self, grid, p1, p2):
-        g = grid.copy()
-        g[p1[0], p1[1]], g[p2[0], p2[1]] = g[p2[0], p2[1]], g[p1[0], p1[1]]
-        return g
-    def heuristic(self, grid): return np.sum(grid != self.g)
+        """Swap two positions in the grid to simulate a move."""
+        new_grid = grid.copy()
+        new_grid[p1[0], p1[1]], new_grid[p2[0], p2[1]] = new_grid[p2[0], p2[1]], new_grid[p1[0], p1[1]]
+        return new_grid
+
+    def heuristic(self, grid):
+        """Heuristic: Count misplaced tiles compared to the goal."""
+        return np.sum(grid != self.goal)
+
     def solve(self):
-        pq, seen = PriorityQueue(), set()
-        pq.put((self.heuristic(self.s), self.s.tobytes(), [self.s]))  # Use tobytes for comparison
+        """A* Search Algorithm to find the optimal solution."""
+        pq = PriorityQueue()
+        visited = set()
+        
+        start_key = self.start.tobytes()
+        pq.put((self.heuristic(self.start), start_key, [self.start]))
+        
         while not pq.empty():
             _, state_key, path = pq.get()
-            cur = np.frombuffer(state_key, dtype=int).reshape(3, 3)
-            if self.is_goal(cur): return path
-            for move in self.moves(cur):
-                m_key = move.tobytes()
-                if m_key not in seen:
-                    seen.add(m_key)
-                    pq.put((self.heuristic(move) + len(path), m_key, path + [move]))  # Add path length to heuristic
-        return None
+            current_state = np.frombuffer(state_key, dtype=int).reshape(3, 3)
+            
+            if self.is_goal(current_state):
+                return path  # Solution found
 
+            for move in self.moves(current_state):
+                move_key = move.tobytes()
+                if move_key not in visited:
+                    visited.add(move_key)
+                    pq.put((self.heuristic(move) + len(path), move_key, path + [move]))  # f = g + h
+
+        return None  # No solution found
+
+# Define the start and goal states
 start = np.array([[2, 8, 1], [0, 4, 3], [7, 6, 5]])
 goal = np.array([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
-p = Puzzle(start, goal)
-res = p.solve()
 
-if res:
-    for i, step in enumerate(res): print(f"Move {i}:\n{step}\n")
-    print(f"Total moves: {len(res)-1}")
-else: print("No solution found.")
+# Solve the puzzle
+puzzle = Puzzle(start, goal)
+solution = puzzle.solve()
+
+# Display the result
+if solution:
+    for i, step in enumerate(solution):
+        print(f"Move {i}:\n{step}\n")
+    print(f"Total moves: {len(solution) - 1}")
+else:
+    print("No solution found.")
