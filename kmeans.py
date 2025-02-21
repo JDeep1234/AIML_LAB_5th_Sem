@@ -15,4 +15,5 @@ plt.scatter(centroids[:, 0], centroids[:, 1], marker='x', c='black', label='Cent
 plt.title('K-Means Clustering on Iris Dataset')
 plt.xlabel('Sepal Length')
 plt.ylabel('Sepal Width')
-plt.legend(), plt.show()
+plt.legend()
+plt.show()
