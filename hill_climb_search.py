@@ -1,4 +1,4 @@
-def hill_climbing(func, start, step=0.01, max_iter=1000):
+def hill_climbing(func, start, step=0.01, max_iter=1000): 
     x = start
     for _ in range(max_iter):
         fx = func(x)
