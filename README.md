@@ -13,7 +13,7 @@
 
 ## 4. Apply Hill CLimbing Search Algorithm to maximize f(x)  
 - [**Hill_Climb_Search**](./hill_climb_search.py)
-- [**Hill_Climb_Search with x,y**](./hillclimbing_two_var.py) 
+- [**Hill_Climb_Search with x,y**](./hillclimbing_with_two_var.py) 
 
 ## 5. Logistic Regression
 - [**Logistic_Regression** ](./logisticregression.py)  
