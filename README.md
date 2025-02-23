@@ -22,7 +22,7 @@
 
 ## 6. Naive Bayes Algorithm 
 - [**Naive_Bayes**](./naivebayes.py)
-- [**Naive_Bayes_library** ](./naive_bayes_lib.py)  
+- [**Naive_Bayes_library** ](./naive_bayes_Lib.py)  
 
 ## 7. KNN Algorithm
 - [**KNN**](./knn.py)
