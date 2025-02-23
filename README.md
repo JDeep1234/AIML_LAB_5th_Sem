@@ -16,17 +16,20 @@
 - [**Hill_Climb_Search with x,y**](./hillclimbing_with_two_var.py) 
 
 ## 5. Logistic Regression
-- [**Logistic_Regression** ](./logisticregression.py)  
+- [**Logistic_Regression** ](./logisticregression.py)
+- [**Logistic_Regression_library** ](./lr_lib.py)  
 
 
 ## 6. Naive Bayes Algorithm 
-- [**Naive_Bayes**](./naivebayes.py)  
-
+- [**Naive_Bayes**](./naivebayes.py)
+- [**Logistic_Regression** ](./Naive_Bayes_lib.py)  
 
 ## 7. KNN Algorithm
-- [**KNN**](./knn.py)  
+- [**KNN**](./knn.py)
+- [**Logistic_Regression** ](./knn_lib.py)  
 
 
 ## 8.K-Means Clustering Algorithm  
-- [**KMeans**](./kmeans.py)  
+- [**KMeans**](./kmeans.py)
+- [**Logistic_Regression** ](./kmeans_lib.py)  
 
