@@ -1,37 +1,57 @@
 import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
 
-# Load dataset
-X, y = load_iris(return_X_y=True)
-class_names = load_iris().target_names
+# Load iris dataset
+iris = load_iris()
+X, y = iris.data, iris.target
+class_names = iris.target_names
 
-# Split into training and testing sets
+class NaiveBayes:
+    def fit(self, X, y):
+        self._classes = np.unique(y)
+        self._mean = np.array([X[y == c].mean(axis=0) for c in self._classes])
+        self._var = np.array([X[y == c].var(axis=0) for c in self._classes])
+        self._priors = np.array([X[y == c].shape[0] / len(y) for c in self._classes])
+
+    def predict(self, X):
+        return np.array([self._predict(x) for x in X])
+
+    def _predict(self, x):
+        posteriors = [np.log(prior) + np.sum(np.log(self._pdf(idx, x)))
+                      for idx, prior in enumerate(self._priors)]
+        return self._classes[np.argmax(posteriors)]
+
+    def _pdf(self, class_idx, x):
+        mean, var = self._mean[class_idx], self._var[class_idx]
+        numerator = np.exp(- (x - mean)**2 / (2 * var))
+        denominator = np.sqrt(2 * np.pi * var)
+        return numerator / denominator
+
+
+
+# Split the dataset
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)
 
-# Compute class-wise mean, variance, and prior probabilities
-classes = np.unique(y)
-mean = np.array([X_train[y_train == c].mean(axis=0) for c in classes])
-var = np.array([X_train[y_train == c].var(axis=0) for c in classes])
-priors = np.array([(y_train == c).mean() for c in classes])
+# Create and train the Naive Bayes model
+nb = NaiveBayes()
+nb.fit(X_train, y_train)
 
-# Naïve Bayes prediction function
-def predict(x):
-    probs = [
-        np.log(priors[i]) + np.sum(
-            np.log(np.exp(-(x - mean[i])**2 / (2 * var[i])) / np.sqrt(2 * np.pi * var[i]))
-        )
-        for i in range(len(classes))
-    ]
-    return classes[np.argmax(probs)]
+# Make predictions
+y_pred = nb.predict(X_test)
+print('Accuracy: %.4f' % np.mean(y_pred == y_test))
+# Print class names instead of class numbers
+print("Predictions:", iris.target_names[y_pred])
 
-# Predict on test set
-y_pred = np.array([predict(x) for x in X_test])
 
-# Print results
-accuracy = np.mean(y_pred == y_test)
-print(f'Accuracy: {accuracy:.4f}')
-print("Predictions:", class_names[y_pred])
-print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
-print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=class_names))
+
+### Optional confusion matrix
+
+from sklearn.metrics import confusion_matrix, classification_report
+# Print confusion matrix
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+# Print classification report
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred, target_names=class_names))
