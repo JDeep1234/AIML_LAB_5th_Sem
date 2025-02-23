@@ -12,7 +12,7 @@ def minimax(node, depth, alpha, beta, maximizingPlayer):
             maxEva = max(maxEva, eva)  
             alpha = max(alpha, maxEva)  
             if beta <= alpha:  
-                pruned_nodes.append(child)  # Append the pruned node  
+                pruned_nodes.append(eva)  # Append the pruned node  
                 break  
         return maxEva  
 
@@ -23,7 +23,7 @@ def minimax(node, depth, alpha, beta, maximizingPlayer):
             minEva = min(minEva, eva)  
             beta = min(beta, minEva)  
             if beta <= alpha:  
-                pruned_nodes.append(child)  # Append the pruned node  
+                pruned_nodes.append(eva)  # Append the pruned node  
                 break  
         return minEva  
 
