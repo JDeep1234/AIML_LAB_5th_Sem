@@ -1,41 +1,41 @@
-def minimax(t, ai_turn, a, b):
-    if t >= 20:
-        return -1 if ai_turn else 1 if t > 20 else 0
+def minimax(node, depth, alpha, beta, maximizingPlayer):
+    if depth == 0 or isinstance(node, int):  
+        return node
 
-    best = -float('inf') if ai_turn else float('inf')
-    
-    for move in [1, 2, 3]:
-        score = minimax(t + move, not ai_turn, a, b)
-        
-        if ai_turn:
-            best = max(best, score)
-            a = max(a, score)
-        else:
-            best = min(best, score)
-            b = min(b, score)
-        
-        if b <= a:
-            break
-    return best
+    if maximizingPlayer:
+        maxEva = float('-inf')  
+        for child in node:
+            eva = minimax(child, depth - 1, alpha, beta, False)
+            maxEva = max(maxEva, eva)
+            alpha = max(alpha, maxEva)
+            if beta <= alpha:
+                break  
+        return maxEva
 
-t = 0
+    else:
+        minEva = float('inf')  
+        for child in node:
+            eva = minimax(child, depth - 1, alpha, beta, True)
+            minEva = min(minEva, eva)
+            beta = min(beta, minEva)
+            if beta <= alpha:
+                break  
+        return minEva
 
-while t < 20:
-    player = int(input("Your move (1, 2, 3): "))
-    while player not in [1, 2, 3]:
-        player = int(input("Invalid. Enter 1, 2, or 3: "))
-    t += player
-    print(f"Total: {t}")
-    
-    if t >= 20:
-        print("You win!")
-        break
+def build_tree(flat_tree, depth):
+    """Convert a flat array into a nested tree structure."""
+    if depth == 0:
+        return flat_tree.pop(0)  
+    children = []
+    for _ in range(2):  
+        children.append(build_tree(flat_tree, depth - 1))
+    return children
 
-    print("AI's turn...")
-    ai_move = max((minimax(t + m, False, -float('inf'), float('inf')), m) for m in [1, 2, 3])[1]
-    t += ai_move
-    print(f"AI picks {ai_move}. Total: {t}")
-    
-    if t >= 20:
-        print("AI wins!")
-        break
+flattened_tree = list(map(int, input("Enter the flattened game tree (space-separated): ").split()))
+depth = int(input("Enter the depth of the tree: "))
+
+game_tree = build_tree(flattened_tree, depth)
+
+evaluated_value = minimax(game_tree, depth, alpha=float('-inf'), beta=float('inf'), maximizingPlayer=True)
+
+print("Evaluated Value:", evaluated_value)
