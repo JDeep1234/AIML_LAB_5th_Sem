@@ -22,14 +22,14 @@
 
 ## 6. Naive Bayes Algorithm 
 - [**Naive_Bayes**](./naivebayes.py)
-- [**Logistic_Regression** ](./Naive_Bayes_lib.py)  
+- [**Naive_Bayes_library** ](./Naive_Bayes_lib.py)  
 
 ## 7. KNN Algorithm
 - [**KNN**](./knn.py)
-- [**Logistic_Regression** ](./knn_lib.py)  
+- [**KNN_library** ](./knn_lib.py)  
 
 
 ## 8.K-Means Clustering Algorithm  
 - [**KMeans**](./kmeans.py)
-- [**Logistic_Regression** ](./kmeans_lib.py)  
+- [**KMeans_library** ](./kmeans_lib.py)  
 
