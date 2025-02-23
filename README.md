@@ -1,7 +1,8 @@
 # 5th Semester CSE AIML Lab Programs
 
 ## 1.Solve Tic-Tac-Toe using DFS
-- [**Tic_Tac_Toe using DFS**](./tictactoe.py)  
+- [**Tic_Tac_Toe using DFS**](./tictactoe.py)
+- [**Tic_Tac_Toe using MinMax**](./tic_tac_toe_MinMax.py)  
 
 
 ## 2. Alpha-Beta Pruning Problem
